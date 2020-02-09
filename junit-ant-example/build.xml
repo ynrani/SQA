@@ -1,0 +1,55 @@
+<project name="junit-ant-example" default="unit-test-2-batch" basedir=".">
+
+	<property name="src" location="src" />
+	<property name="build" location="build" />
+	<property name="dist" location="dist" />
+	<property name="test" location="src/test/java" />
+	<property name="lib" location="lib" />
+	<description>
+    simple example build file
+  </description>
+	<target name="unit-test-1" >
+		<junit printsummary="yes" haltonfailure="yes">
+			<classpath>
+				<pathelement location="${project.class.path}" />
+				<pathelement location="${build.tests}" />
+				<pathelement path="${java.class.path}" />
+			</classpath>
+			<classpath location="lib/junit-4.12.jar" />
+			<classpath location="lib/hamcrest-core-1.3.jar" />
+			<test name="com.areyes1.jgc.junit.assertequals.JUnitAssertEqualsExample" haltonfailure="no" outfile="result">
+				<formatter type="plain" />
+				<formatter type="xml" />
+			</test>
+		</junit>
+	</target>
+
+	<target name="unit-test-2-batch" >
+		<junit printsummary="yes" haltonfailure="no">
+			<classpath>
+				<pathelement location="${project.class.path}" />
+				<pathelement location="${build.tests}" />
+				<pathelement path="${java.class.path}" />
+			</classpath>
+			<classpath location="lib/junit-4.12.jar" />
+			<classpath location="lib/hamcrest-core-1.3.jar" />
+			<formatter type="plain" />
+			<formatter type="xml" />
+
+			<batchtest fork="yes" todir="${reports.tests}">
+				<fileset dir="${test}">
+					<include name="**/**.java" />
+				</fileset>
+			</batchtest>
+		</junit>
+	</target>
+	<target name="test-reports">
+
+		<junitreport tofile="TESTS-TestSuites.xml" todir="${reports.tests}">
+			<fileset dir="${reports.tests}">
+				<include name="TEST-*.xml" />
+			</fileset>
+			<report format="frames" todir="${reports.tests}" />
+		</junitreport>
+	</target>
+</project>
